@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고난도 피싱 탐지 실험</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.css" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-white">
+    <section id="intro" class="active">
+        <div class="card">
+            <h1 class="title">보안 인지력 테스트 (심화형)</h1>
+            <p class="intro-text">참가자의 성함을 입력하고 시작해주세요.</p>
+            <input type="text" id="user-name" placeholder="이름을 입력하세요">
+            <button class="btn-primary" onclick="showInstructions()">다음으로</button>
+        </div>
+    </section>
+
+    <section id="instructions">
+        <div class="card instruction-card">
+            <h1 class="title">실험 가이드</h1>
+            <div class="instruction-box">
+                <p><span>1.</span> 왼쪽 <b>원본 사이트</b>와 오른쪽 <b>테스트 사이트</b>를 꼼꼼히 비교하세요.</p>
+                <p><span>2.</span> 차이점은 화면 <b>상단(메뉴), 중앙(버튼/텍스트), 하단(정보)</b> 어디에든 1~2개 숨어있을 수 있습니다.</p>
+                <p><span>3.</span> 색상의 미세한 톤, 간격, 스펠링 등 아주 작은 변화에 집중하세요.</p>
+                <p><span>4.</span> 차이가 하나라도 있다면 <b>'피싱 신고'</b>를, 완벽히 똑같다면 <b>'정상 확정'</b>을 누르세요.</p>
+            </div>
+            <button class="btn-primary" onclick="startExperiment()">실험 시작하기</button>
+        </div>
+    </section>
+
+    <section id="experiment">
+        <div class="status-dashboard-container">
+            <div class="stat-item">참가자: <span id="display-name"></span></div>
+            <div class="stat-item">라운드: <span id="round-num">1</span> / 6</div>
+            <div class="stat-item">환경: <span id="stimulus-text" class="badge">-</span></div>
+            <div class="stat-item">시간: <span id="timer">0.0</span>s</div>
+        </div>
+
+        <div class="dual-browser-container">
+            <div class="browser-mockup original-browser">
+                <div class="side-indicator">정상 가이드 (원본)</div>
+                <div class="browser-header">
+                    <div class="browser-dots">
+                        <div class="dot close"></div><div class="dot minimize"></div><div class="dot maximize"></div>
+                    </div>
+                    <div class="address-bar">
+                        <span class="lock-icon" id="orig-lock">🔒</span>
+                        <input type="text" id="orig-url" readonly>
+                    </div>
+                </div>
+                <div class="browser-content" id="original-ui"></div>
+            </div>
+
+            <div class="browser-mockup phish-browser">
+                <div class="side-indicator phish-label">검증 대상 (테스트)</div>
+                <div class="browser-header">
+                    <div class="browser-dots">
+                        <div class="dot close"></div><div class="dot minimize"></div><div class="dot maximize"></div>
+                    </div>
+                    <div class="address-bar">
+                        <span class="lock-icon" id="target-lock">🔒</span>
+                        <input type="text" id="target-url" readonly>
+                    </div>
+                </div>
+                <div class="browser-content" id="target-ui"></div>
+            </div>
+        </div>
+
+        <div class="action-area">
+            <button class="btn-danger" onclick="triggerDetection('phishing')">⚠️ 피싱 신고 (차이점 발견)</button>
+            <button class="btn-safe" onclick="triggerDetection('normal')">✅ 정상 사이트 확정 (완벽 일치)</button>
+        </div>
+    </section>
+
+    <section id="results">
+        <div class="card result-card">
+            <h1 class="title">실험 분석 보고서</h1>
+            <div class="table-wrapper">
+                <table id="result-table">
+                    <thead>
+                        <tr>
+                            <th>라운드</th>
+                            <th>브랜드</th>
+                            <th>배경 자극</th>
+                            <th>숨겨진 단서</th>
+                            <th>판독 결과</th>
+                            <th>소요 시간</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <button class="btn-primary" onclick="downloadCSV()" style="margin-top: 30px;">결과 CSV 저장</button>
+        </div>
+    </section>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
